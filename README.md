@@ -1,50 +1,74 @@
-# Welcome to your Expo app 👋
+# Unbeatable Tic Tac Toe
 
-This is an [Expo](https://expo.dev) project created with [`create-expo-app`](https://www.npmjs.com/package/create-expo-app).
+A React Native mobile application featuring an unbeatable Tic Tac Toe game with a sleek, modern UI.
 
-## Get started
+## Features
 
-1. Install dependencies
+- Beautiful, modern UI with gradient colors and smooth animations
+- Unbeatable AI opponent using optimal Tic Tac Toe strategy
+- Option to choose who goes first (player or computer)
+- Clear game state indicators and win/lose/draw messages
+- Responsive design that works on both iOS and Android
 
+## How to Run
+
+1. Make sure you have Node.js and npm installed
+2. Install Expo CLI globally:
+   ```bash
+   npm install -g expo-cli
+   ```
+3. Clone this repository
+4. Install dependencies:
    ```bash
    npm install
    ```
-
-2. Start the app
-
+5. Start the development server:
    ```bash
    npx expo start
    ```
+6. Use the Expo Go app on your mobile device to scan the QR code, or press 'i' for iOS simulator or 'a' for Android emulator
 
-In the output, you'll find options to open the app in a
+## Technical Details
 
-- [development build](https://docs.expo.dev/develop/development-builds/introduction/)
-- [Android emulator](https://docs.expo.dev/workflow/android-studio-emulator/)
-- [iOS simulator](https://docs.expo.dev/workflow/ios-simulator/)
-- [Expo Go](https://expo.dev/go), a limited sandbox for trying out app development with Expo
+### AI Implementation
 
-You can start developing by editing the files inside the **app** directory. This project uses [file-based routing](https://docs.expo.dev/router/introduction).
+The computer player uses a strategic approach to ensure it never loses:
 
-## Get a fresh project
+1. **Winning Move Check**: First checks if it has a winning move available
+2. **Blocking Move**: If no winning move, blocks the player's winning move
+3. **Center Control**: Takes the center if available (optimal position)
+4. **Corner Strategy**: Takes available corners (second-best positions)
+5. **Random Selection**: If no strategic moves available, takes any available space
 
-When you're ready, run:
+This strategy ensures the computer will:
+- Win if the player makes a mistake
+- Force a draw if the player plays optimally
+- Never lose a game
 
-```bash
-npm run reset-project
-```
+### Technologies Used
 
-This command will move the starter code to the **app-example** directory and create a blank **app** directory where you can start developing.
+- **React Native**: For cross-platform mobile development
+- **Expo**: For simplified development and deployment
+- **TypeScript**: For type safety and better development experience
+- **Expo Linear Gradient**: For beautiful gradient effects
+- **React Native Reanimated**: For smooth animations
 
-## Learn more
+### Game Logic
 
-To learn more about developing your project with Expo, look at the following resources:
+The game uses a 3x3 grid represented as a 9-element array. Each position can be:
+- `null`: Empty space
+- `'X'`: Player's move
+- `'O'`: Computer's move
 
-- [Expo documentation](https://docs.expo.dev/): Learn fundamentals, or go into advanced topics with our [guides](https://docs.expo.dev/guides).
-- [Learn Expo tutorial](https://docs.expo.dev/tutorial/introduction/): Follow a step-by-step tutorial where you'll create a project that runs on Android, iOS, and the web.
+Win conditions are checked using predefined winning combinations (rows, columns, diagonals).
 
-## Join the community
+### UI Components
 
-Join our community of developers creating universal apps.
+- **Game Board**: 3x3 grid with touchable squares
+- **Status Header**: Shows current game state and turn
+- **Result Modal**: Displays game outcome and new game option
+- **Start Modal**: Allows choosing who goes first
 
-- [Expo on GitHub](https://github.com/expo/expo): View our open source platform and contribute.
-- [Discord community](https://chat.expo.dev): Chat with Expo users and ask questions.
+## Contributing
+
+Feel free to submit issues and enhancement requests!
