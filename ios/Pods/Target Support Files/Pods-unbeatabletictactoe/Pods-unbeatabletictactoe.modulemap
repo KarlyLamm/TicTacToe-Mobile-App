@@ -1,0 +1,6 @@
+module Pods_unbeatabletictactoe {
+  umbrella header "Pods-unbeatabletictactoe-umbrella.h"
+
+  export *
+  module * { export * }
+}

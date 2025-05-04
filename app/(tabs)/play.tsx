@@ -9,6 +9,7 @@ import { ThemedText } from '@/components/ThemedText';
 import { ThemedView } from '@/components/ThemedView';
 import { Colors } from '@/constants/Colors';
 import { useColorScheme } from '@/hooks/useColorScheme';
+import { getBestMove } from '../../game/ai';
 
 const WINNING_COMBINATIONS: number[][] = [
   [0, 1, 2], [3, 4, 5], [6, 7, 8],
@@ -36,6 +37,8 @@ export default function PlayScreen() {
   const [showConfetti, setShowConfetti] = useState(false);
   const shareViewRef = useRef<View>(null);
   const turnAnim = useRef(new Animated.Value(0)).current;
+  const aiLetter = 'O';
+  const userLetter = 'X';
 
   // Animate turn indicator
   useEffect(() => {
@@ -60,31 +63,6 @@ export default function PlayScreen() {
     return board.includes(null) ? null : 'draw';
   };
 
-  const makeComputerMove = (board: Board): number => {
-    for (let i = 0; i < 9; i++) {
-      if (!board[i]) {
-        const newBoard = [...board];
-        newBoard[i] = 'O';
-        if (checkWinner(newBoard) === 'O') return i;
-      }
-    }
-    for (let i = 0; i < 9; i++) {
-      if (!board[i]) {
-        const newBoard = [...board];
-        newBoard[i] = 'X';
-        if (checkWinner(newBoard) === 'X') return i;
-      }
-    }
-    if (!board[4]) return 4;
-    const corners = [0, 2, 6, 8];
-    const availableCorners = corners.filter((i: number) => !board[i]);
-    if (availableCorners.length > 0) {
-      return availableCorners[Math.floor(Math.random() * availableCorners.length)];
-    }
-    const availableSpaces = board.map((cell: Player, index: number) => !cell ? index : -1).filter((i: number) => i !== -1);
-    return availableSpaces[Math.floor(Math.random() * availableSpaces.length)];
-  };
-
   const handlePress = (index: number) => {
     if (!gameStarted || board[index] || winner || (userFirst === false && !isXNext)) return;
     const newBoard = [...board];
@@ -102,9 +80,9 @@ export default function PlayScreen() {
   useEffect(() => {
     if (!isXNext && !winner && userFirst !== null && gameStarted) {
       setTimeout(() => {
-        const computerMove = makeComputerMove(board);
+        const computerMove = getBestMove(board, aiLetter, userLetter);
         const newBoard = [...board];
-        newBoard[computerMove] = 'O';
+        newBoard[computerMove] = aiLetter;
         setBoard(newBoard);
         setIsXNext(true);
         const gameWinner = checkWinner(newBoard);
@@ -115,7 +93,7 @@ export default function PlayScreen() {
         }
       }, 600);
     }
-  }, [isXNext, board, winner, userFirst, gameStarted]);
+  }, [isXNext, board, winner, userFirst, gameStarted, aiLetter, userLetter]);
 
   useEffect(() => {
     if (winner) {
