@@ -72,3 +72,23 @@ Win conditions are checked using predefined winning combinations (rows, columns,
 ## Contributing
 
 Feel free to submit issues and enhancement requests!
+
+## Running Unit Tests
+
+This project uses [Jest](https://jestjs.io/) for unit testing (with TypeScript support via ts-jest).
+
+To run all unit tests locally:
+
+```sh
+npm test
+```
+
+Or to run a specific test file:
+
+```sh
+npx jest path/to/your.test.ts
+```
+
+### Continuous Integration
+
+Unit tests are automatically run on every pull request and push to the `main` branch using GitHub Actions. See `.github/workflows/test.yml` for details.
