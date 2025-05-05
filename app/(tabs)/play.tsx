@@ -142,18 +142,22 @@ export default function PlayScreen() {
       shadowRadius: 20,
       shadowOffset: { width: 0, height: 0 },
       elevation: 8,
-      borderWidth: 1,
-      borderColor: colorScheme === 'dark' ? 'rgba(74,144,226,0.2)' : 'rgba(47,149,220,0.2)',
+      alignItems: 'center',
+      justifyContent: 'center',
     },
     board: {
       alignSelf: 'center',
       marginTop: 0,
       marginBottom: 0,
       backgroundColor: 'transparent',
+      alignItems: 'center',
+      justifyContent: 'center',
     },
     row: {
       flexDirection: 'row',
       backgroundColor: 'transparent',
+      alignItems: 'center',
+      justifyContent: 'center',
     },
     squareWrap: {
       margin: 6,
@@ -545,15 +549,7 @@ export default function PlayScreen() {
                       shadowOffset: { width: 0, height: 0 },
                     }}
                   />
-                  <ThemedView style={[styles.boardGlass, {
-                    backgroundColor: 'transparent',
-                    borderWidth: 1.5,
-                    borderColor: colorScheme === 'dark' ? '#4a90e2' : '#2f95dc',
-                    width: 320,
-                    height: 320,
-                    borderRadius: 32,
-                    zIndex: 1,
-                  }]}
+                  <ThemedView style={[styles.boardGlass]}
                   >
                     <ThemedView style={styles.board}>
                       <ThemedView style={styles.row}>{[0, 1, 2].map(renderSquare)}</ThemedView>
