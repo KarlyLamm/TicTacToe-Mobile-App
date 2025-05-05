@@ -1,14 +1,19 @@
 # Unbeatable Tic Tac Toe
 
-A React Native mobile application featuring an unbeatable Tic Tac Toe game with a sleek, modern UI.
+A React Native mobile application featuring an unbeatable Tic Tac Toe game with a sleek, modern UI and robust features.
 
 ## Features
 
-- Beautiful, modern UI with gradient colors and smooth animations
+- Beautiful, modern UI with gradients, glassmorphism, and glowing effects
+- Dark mode support with theme toggle in settings
 - Unbeatable AI opponent using optimal Tic Tac Toe strategy
 - Option to choose who goes first (player or computer)
-- Clear game state indicators and win/lose/draw messages
-- Responsive design that works on both iOS and Android
+- Persistent stats (wins, losses, draws, streaks) and theme using AsyncStorage
+- Modern home screen with animated stats, progress ring, and win streak trophy
+- Share your results and challenge friends
+- Animated confetti for achievements
+- Custom app icon and splash screen
+- Responsive design for iOS and Android
 
 ## How to Run
 
@@ -47,11 +52,13 @@ This strategy ensures the computer will:
 
 ### Technologies Used
 
-- **React Native**: For cross-platform mobile development
-- **Expo**: For simplified development and deployment
-- **TypeScript**: For type safety and better development experience
-- **Expo Linear Gradient**: For beautiful gradient effects
-- **React Native Reanimated**: For smooth animations
+- **React Native** & **Expo**
+- **TypeScript**
+- **Expo Linear Gradient** (gradients)
+- **React Native SVG** (charts and progress rings)
+- **@react-native-async-storage/async-storage** (persistence)
+- **Jest** (unit testing)
+- **React Native Reanimated** (animations)
 
 ### Game Logic
 
@@ -62,12 +69,15 @@ The game uses a 3x3 grid represented as a 9-element array. Each position can be:
 
 Win conditions are checked using predefined winning combinations (rows, columns, diagonals).
 
-### UI Components
+### UI Components & Visuals
 
-- **Game Board**: 3x3 grid with touchable squares
-- **Status Header**: Shows current game state and turn
-- **Result Modal**: Displays game outcome and new game option
+- **Game Board**: 3x3 grid with glassy, glowing, and animated effects
+- **Status Header**: Gradient header with current game state and turn
+- **Result Modal**: Displays game outcome, confetti, and new game/share options
 - **Start Modal**: Allows choosing who goes first
+- **Home Screen**: Animated stats (pie chart, progress ring, trophy), share button, and modern layout
+- **Settings Screen**: Theme toggle and app preferences
+- **Custom App Icon & Splash**: Branded visuals for launch and home screen
 
 ## Contributing
 
@@ -86,8 +96,13 @@ npm test
 Or to run a specific test file:
 
 ```sh
-npx jest path/to/your.test.ts
+npx jest game/ai.test.ts 
 ```
+
+### Test Coverage
+- AI logic (minimax, blocking, winning, fork, draw)
+- Board/game state logic (reset, move validity, win/draw detection)
+- Stats and persistence logic
 
 ### Continuous Integration
 

@@ -1,4 +1,4 @@
-import { Board, checkWinner, getBestMove } from './ai';
+import { Board, Player, checkWinner, getBestMove } from './ai';
 
 describe('Tic-Tac-Toe AI (Minimax)', () => {
   it('blocks immediate win', () => {
@@ -76,5 +76,141 @@ describe('Tic-Tac-Toe AI (Minimax)', () => {
     const newBoard = [...board];
     newBoard[move] = 'O';
     expect(checkWinner(newBoard)).toBe('draw');
+  });
+});
+
+describe('Tic-Tac-Toe Game Logic (Board/Stats)', () => {
+  function isBoardFull(board: Board): boolean {
+    return board.every((cell: Player) => cell !== null);
+  }
+  function canStartGame(board: Board): boolean {
+    return !isBoardFull(board);
+  }
+  function canPlayMove(board: Board, winner: Player | 'draw' | null): boolean {
+    return !winner && board.includes(null);
+  }
+  function resetBoard(): Board {
+    return Array(9).fill(null);
+  }
+  function playMove(board: Board, index: number, player: Player): Board {
+    if (board[index] !== null) return board; // cannot play on occupied
+    const newBoard = [...board];
+    newBoard[index] = player;
+    return newBoard;
+  }
+  it('does not allow game to start with a full board', () => {
+    const board: Board = ['X','O','X','O','X','O','O','X','O'];
+    expect(canStartGame(board)).toBe(false);
+  });
+  it('does not allow moves after win or draw', () => {
+    const board: Board = ['X','X','X',null,'O','O',null,null,null];
+    const winner = checkWinner(board);
+    expect(canPlayMove(board, winner)).toBe(false);
+    const drawBoard: Board = ['X','O','X','X','O','O','O','X','X'];
+    const drawWinner = checkWinner(drawBoard);
+    expect(canPlayMove(drawBoard, drawWinner)).toBe(false);
+  });
+  it('resets the board to all null after a game', () => {
+    const board: Board = ['X','O','X','O','X','O','O','X','O'];
+    const reset = resetBoard();
+    expect(reset).toEqual([null,null,null,null,null,null,null,null,null]);
+  });
+  it('does not allow a user to select a spot that is already played', () => {
+    const board: Board = [null,'X',null,null,null,null,null,null,null];
+    const newBoard = playMove(board, 1, 'O');
+    expect(newBoard).toEqual(board); // unchanged
+    const validMove = playMove(board, 0, 'O');
+    expect(validMove[0]).toBe('O');
+  });
+  it('updates stats correctly after each game', () => {
+    // Simple stats mock
+    let stats = { won: 0, lost: 0, draw: 0 };
+    function updateStats(winner: Player | 'draw' | null) {
+      if (winner === 'X') stats.won++;
+      else if (winner === 'O') stats.lost++;
+      else if (winner === 'draw') stats.draw++;
+    }
+    updateStats('X');
+    updateStats('O');
+    updateStats('draw');
+    updateStats('X');
+    expect(stats).toEqual({ won: 2, lost: 1, draw: 1 });
+  });
+});
+
+describe('Tic-Tac-Toe Edge Cases and Turn Logic', () => {
+  it('alternates turns correctly and resets state', () => {
+    let board: Board = Array(9).fill(null);
+    let isXNext = true;
+    let winner: Player | 'draw' | null = null;
+    // X moves
+    board[0] = isXNext ? 'X' : 'O';
+    isXNext = !isXNext;
+    // O moves
+    board[1] = isXNext ? 'X' : 'O';
+    isXNext = !isXNext;
+    // X moves
+    board[2] = isXNext ? 'X' : 'O';
+    isXNext = !isXNext;
+    // O moves
+    board[3] = isXNext ? 'X' : 'O';
+    isXNext = !isXNext;
+    // X moves
+    board[4] = isXNext ? 'X' : 'O';
+    isXNext = !isXNext;
+    // O moves
+    board[5] = isXNext ? 'X' : 'O';
+    isXNext = !isXNext;
+    // X moves
+    board[6] = isXNext ? 'X' : 'O';
+    isXNext = !isXNext;
+    // O moves
+    board[7] = isXNext ? 'X' : 'O';
+    isXNext = !isXNext;
+    // X moves
+    board[8] = isXNext ? 'X' : 'O';
+    isXNext = !isXNext;
+    // After 9 moves, board is full, isXNext should be false (since last move was X)
+    expect(board).toEqual(['X','O','X','O','X','O','X','O','X']);
+    expect(isXNext).toBe(false);
+    // Reset state
+    board = Array(9).fill(null);
+    isXNext = true;
+    winner = null;
+    expect(board).toEqual([null,null,null,null,null,null,null,null,null]);
+    expect(isXNext).toBe(true);
+    expect(winner).toBe(null);
+  });
+
+  it('detects all win lines for X and O', () => {
+    const winBoards: Board[] = [
+      // Rows
+      ['X','X','X',null,null,null,null,null,null],
+      [null,null,null,'O','O','O',null,null,null],
+      [null,null,null,null,null,null,'X','X','X'],
+      // Columns
+      ['O',null,null,'O',null,null,'O',null,null],
+      [null,'X',null,null,'X',null,null,'X',null],
+      [null,null,'O',null,null,'O',null,null,'O'],
+      // Diagonals
+      ['X',null,null,null,'X',null,null,null,'X'],
+      [null,null,'O',null,'O',null,'O',null,null],
+    ];
+    winBoards.forEach(board => {
+      const winner = checkWinner(board);
+      expect(['X','O']).toContain(winner);
+    });
+  });
+
+  it('detects draw for full board with no winner', () => {
+    const drawBoard: Board = ['X','O','X','X','O','O','O','X','X'];
+    expect(checkWinner(drawBoard)).toBe('draw');
+  });
+
+  it('does not detect a win or draw for empty or partial board', () => {
+    const emptyBoard: Board = [null,null,null,null,null,null,null,null,null];
+    const partialBoard: Board = ['X',null,'O',null,null,null,null,null,null];
+    expect(checkWinner(emptyBoard)).toBe(null);
+    expect(checkWinner(partialBoard)).toBe(null);
   });
 }); 

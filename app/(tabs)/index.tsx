@@ -449,7 +449,7 @@ export default function HomeScreen() {
       marginBottom: 4,
     },
     statNumberGlow: {
-      fontSize: 26,
+      fontSize: 24,
       fontWeight: 'bold',
       color: '#fff',
       marginBottom: 2,
