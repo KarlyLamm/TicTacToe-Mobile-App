@@ -220,6 +220,16 @@ export default function PlayScreen() {
       textShadowOffset: { width: 1, height: 2 },
       textShadowRadius: 4,
     },
+    resultHeaderTextPremium: {
+      fontSize: 26,
+      fontWeight: 'bold',
+      color: '#ffffff',
+      marginBottom: 18,
+      textAlign: 'center',
+      textShadowColor: 'rgba(0,0,0,0.18)',
+      textShadowOffset: { width: 1, height: 2 },
+      textShadowRadius: 4,
+    },
     resultButtonRow: {
       flexDirection: 'row',
       gap: 16,
@@ -565,7 +575,7 @@ export default function PlayScreen() {
                 >
                   <LinearGradient colors={[colors.gradientStart, colors.gradientEnd]} style={styles.resultModalGradient}>
                     <FontAwesome name={winner === 'X' ? 'trophy' : winner === 'O' ? 'cogs' : 'handshake-o'} size={36} color="#fff" style={{ marginBottom: 8 }} />
-                    <ThemedText style={styles.resultTextPremium}>
+                    <ThemedText style={styles.resultHeaderTextPremium}>
                       {winner === 'X' ? 'You Won!' : winner === 'O' ? 'You Lost!' : "It's a Draw!"}
                     </ThemedText>
                     <View style={styles.resultButtonRow}>

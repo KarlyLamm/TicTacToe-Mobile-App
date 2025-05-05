@@ -23,8 +23,8 @@ export default function SettingsScreen() {
     <View style={styles.section}>
       <LinearGradient colors={[colors.gradientStart, colors.gradientEnd]} style={styles.heroCard}>
         <FontAwesome name="cog" size={48} color="#fffbe6" />
-        <ThemedText style={[styles.heroTitle, { color: colors.text }]}>Settings</ThemedText>
-        <ThemedText style={[styles.heroSubtitle, { color: colors.text }]}>Customize your app experience</ThemedText>
+        <ThemedText style={[styles.heroTitle, { color: colors.headerText }]}>Settings</ThemedText>
+        <ThemedText style={[styles.heroSubtitle, { color: colors.headerText }]}>Customize your app experience</ThemedText>
       </LinearGradient>
 
       <View style={[styles.menuItem, { backgroundColor: colors.cardBackground }]}>
