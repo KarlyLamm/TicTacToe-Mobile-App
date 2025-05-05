@@ -134,25 +134,29 @@ export default function PlayScreen() {
     },
     boardGlass: {
       backgroundColor: 'transparent',
-      borderRadius: 28,
-      padding: 16,
+      borderRadius: 32,
+      padding: 20,
       marginBottom: 18,
-      shadowColor: '#000',
-      shadowOpacity: 0.1,
-      shadowRadius: 12,
-      elevation: 4,
+      shadowColor: colorScheme === 'dark' ? '#4a90e2' : '#2f95dc',
+      shadowOpacity: 0.3,
+      shadowRadius: 20,
+      shadowOffset: { width: 0, height: 0 },
+      elevation: 8,
+      borderWidth: 1,
+      borderColor: colorScheme === 'dark' ? 'rgba(74,144,226,0.2)' : 'rgba(47,149,220,0.2)',
     },
     board: {
       alignSelf: 'center',
       marginTop: 0,
       marginBottom: 0,
+      backgroundColor: 'transparent',
     },
     row: {
       flexDirection: 'row',
     },
     squareWrap: {
-      margin: 4,
-      borderRadius: 16,
+      margin: 6,
+      borderRadius: 20,
       overflow: 'visible',
     },
     square: {
@@ -161,22 +165,22 @@ export default function PlayScreen() {
       borderWidth: 2,
       justifyContent: 'center',
       alignItems: 'center',
-      borderRadius: 16,
-      backgroundColor: 'transparent',
-      borderColor: colorScheme === 'dark' ? 'rgba(74,144,226,0.35)' : 'rgba(74,144,226,0.25)',
+      borderRadius: 20,
+      backgroundColor: colorScheme === 'dark' ? 'rgba(74,144,226,0.05)' : 'rgba(47,149,220,0.05)',
+      borderColor: colorScheme === 'dark' ? 'rgba(74,144,226,0.3)' : 'rgba(47,149,220,0.3)',
       shadowColor: colorScheme === 'dark' ? '#4a90e2' : '#2f95dc',
-      shadowOpacity: 0.18,
-      shadowRadius: 10,
+      shadowOpacity: 0.2,
+      shadowRadius: 8,
       shadowOffset: { width: 0, height: 2 },
       overflow: 'visible',
     },
     squareText: {
-      fontSize: 44,
+      fontSize: 48,
       fontWeight: 'bold',
       textAlign: 'center',
       fontFamily: 'monospace',
       letterSpacing: 2,
-      textShadowColor: '#4a90e2',
+      textShadowColor: colorScheme === 'dark' ? '#4a90e2' : '#2f95dc',
       textShadowRadius: 12,
       textShadowOffset: { width: 0, height: 0 },
     },
@@ -404,13 +408,28 @@ export default function PlayScreen() {
         key={index}
         style={[
           styles.squareWrap,
-          isWinner && { shadowColor: isActive, shadowOpacity: 0.5, shadowRadius: 12, elevation: 8, transform: [{ scale: 1.08 }] },
+          isWinner && { 
+            shadowColor: isActive, 
+            shadowOpacity: 0.5, 
+            shadowRadius: 16, 
+            elevation: 8, 
+            transform: [{ scale: 1.08 }] 
+          },
         ]}
       >
         <TouchableOpacity
           style={[
             styles.square,
-            { borderColor: isActive, backgroundColor: isWinner ? 'rgba(255,255,255,0.12)' : 'rgba(255,255,255,0.08)' },
+            { 
+              borderColor: isActive, 
+              backgroundColor: isWinner 
+                ? colorScheme === 'dark' 
+                  ? 'rgba(74,144,226,0.15)' 
+                  : 'rgba(47,149,220,0.15)'
+                : colorScheme === 'dark'
+                  ? 'rgba(74,144,226,0.05)'
+                  : 'rgba(47,149,220,0.05)'
+            },
             isWinner && { borderWidth: 3 },
           ]}
           activeOpacity={0.7}
@@ -420,8 +439,16 @@ export default function PlayScreen() {
             <Animated.Text
               style={[
                 styles.squareText,
-                { color: isActive, opacity: 1, transform: [{ scale: 1.1 }] },
-                isWinner && { textShadowColor: isActive, textShadowRadius: 8, textShadowOffset: { width: 0, height: 0 } },
+                { 
+                  color: isActive, 
+                  opacity: 1, 
+                  transform: [{ scale: 1.1 }] 
+                },
+                isWinner && { 
+                  textShadowColor: isActive, 
+                  textShadowRadius: 12, 
+                  textShadowOffset: { width: 0, height: 0 } 
+                },
               ]}
             >
               {board[index]}
@@ -448,7 +475,7 @@ export default function PlayScreen() {
           opacity: turnAnim.interpolate({ inputRange: [0, 1], outputRange: [0.7, 1] }),
         }]}
         >
-          <FontAwesome name={isXNext ? 'user' : 'android'} size={18} color="#fff" style={{ marginRight: 6 }} />
+          <FontAwesome name={isXNext ? 'user' : 'cogs'} size={18} color="#fff" style={{ marginRight: 6 }} />
           <ThemedText style={styles.turnText}>{!gameStarted ? 'Ready?' : winner ? 'Game Over' : isXNext ? 'Your Turn' : 'Computer Thinking...'}</ThemedText>
         </Animated.View>
       </LinearGradient>
@@ -539,7 +566,7 @@ export default function PlayScreen() {
                 <Animated.View style={[styles.resultModal, { opacity: boardAnim, transform: [{ translateY: boardAnim.interpolate({ inputRange: [0, 1], outputRange: [40, 0] }) }] }]}
                 >
                   <LinearGradient colors={[colors.gradientStart, colors.gradientEnd]} style={styles.resultModalGradient}>
-                    <FontAwesome name={winner === 'X' ? 'trophy' : winner === 'O' ? 'android' : 'handshake-o'} size={36} color="#fff" style={{ marginBottom: 8 }} />
+                    <FontAwesome name={winner === 'X' ? 'trophy' : winner === 'O' ? 'cogs' : 'handshake-o'} size={36} color="#fff" style={{ marginBottom: 8 }} />
                     <ThemedText style={styles.resultTextPremium}>
                       {winner === 'X' ? 'You Won!' : winner === 'O' ? 'You Lost!' : "It's a Draw!"}
                     </ThemedText>
