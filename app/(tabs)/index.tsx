@@ -143,7 +143,7 @@ export default function HomeScreen() {
     icon: keyof typeof FontAwesome.glyphMap; 
     href: "/(tabs)/play" | "/(tabs)/learn" | "/(tabs)/settings";
   }) => (
-    <Link href={href} asChild>
+    <Link href={href} asChild accessibilityRole="button" accessibilityLabel={`${title} card. ${description}`}>
       <TouchableOpacity activeOpacity={0.85}>
         <ThemedView style={styles.card}>
           <ThemedView style={styles.cardIconContainer}>
@@ -628,7 +628,7 @@ export default function HomeScreen() {
   });
 
   return (
-    <SafeAreaView style={{ flex: 1, backgroundColor: colors.background }} edges={['top', 'bottom']}>
+    <SafeAreaView style={{ flex: 1, backgroundColor: colors.background }} edges={['top', 'bottom']} accessible accessibilityLabel="Tic-Tac-Nope Home Screen">
       <ScrollView>
         {/* Modern Home Content */}
         <LinearGradient colors={[colors.gradientStart, colors.gradientEnd]}>
@@ -636,27 +636,28 @@ export default function HomeScreen() {
             source={require('@/assets/images/logo.png')}
             style={styles.logo}
             resizeMode="contain"
+            accessibilityLabel="Tic-Tac-Nope logo"
           />
         </LinearGradient>
-        <View style={{ alignItems: 'center', paddingTop: 32, paddingBottom: 24 }}>
+        <View style={{ alignItems: 'center', paddingTop: 32, paddingBottom: 24 }} accessible accessibilityLabel="Game stats and progress">
 
           {/* Stat Cards for Wins, Losses, Draws */}
-          <View style={styles.statsRow}>
-            <LinearGradient colors={[colors.gradientStart, colors.gradientEnd]} style={styles.statCardGradient}>
+          <View style={styles.statsRow} accessible accessibilityRole="summary" accessibilityLabel={`Wins: ${stats.won}, Losses: ${stats.lost}, Draws: ${stats.draw}`}>
+            <LinearGradient colors={[colors.gradientStart, colors.gradientEnd]} style={styles.statCardGradient} accessible accessibilityRole="summary" accessibilityLabel={`Wins: ${stats.won}`}>
               <ThemedView style={[styles.statCard, { backgroundColor: 'transparent' }]}> 
                 <FontAwesome name="trophy" size={32} color={'#fff'} style={styles.statIcon} />
                 <ThemedText style={styles.statNumberGlow}>{stats.won}</ThemedText>
                 <ThemedText style={styles.statLabelGlow}>Wins</ThemedText>
               </ThemedView>
             </LinearGradient>
-            <LinearGradient colors={['#ffb6b6', '#ff6e6e']} style={styles.statCardGradient}>
+            <LinearGradient colors={['#ffb6b6', '#ff6e6e']} style={styles.statCardGradient} accessible accessibilityRole="summary" accessibilityLabel={`Losses: ${stats.lost}`}>
               <ThemedView style={[styles.statCard, { backgroundColor: 'transparent' }]}> 
                 <FontAwesome name="times-circle" size={32} color={'#fff'} style={styles.statIcon} />
                 <ThemedText style={styles.statNumberGlow}>{stats.lost}</ThemedText>
                 <ThemedText style={styles.statLabelGlow}>Losses</ThemedText>
               </ThemedView>
             </LinearGradient>
-            <LinearGradient colors={['#b6d0ff', '#6e9cff']} style={styles.statCardGradient}>
+            <LinearGradient colors={['#b6d0ff', '#6e9cff']} style={styles.statCardGradient} accessible accessibilityRole="summary" accessibilityLabel={`Draws: ${stats.draw}`}>
               <ThemedView style={[styles.statCard, { backgroundColor: 'transparent' }]}> 
                 <FontAwesome name="handshake-o" size={32} color={'#fff'} style={styles.statIcon} />
                 <ThemedText style={styles.statNumberGlow}>{stats.draw}</ThemedText>
@@ -668,7 +669,7 @@ export default function HomeScreen() {
           {/* Game Results and Strategy Mastery Side by Side */}
           <View style={{ flexDirection: 'row', justifyContent: 'center', alignItems: 'stretch', marginBottom: 18 }}>
             {/* Game Results Pie Chart Card */}
-            <View style={{ backgroundColor: colors.cardBackground, borderRadius: 24, padding: 18, width: 180, height: 210, alignItems: 'center', justifyContent: 'center', shadowColor: '#000', shadowOpacity: 0.08, shadowRadius: 8, elevation: 2, marginBottom: 8, marginRight: 16 }}>
+            <View style={{ backgroundColor: colors.cardBackground, borderRadius: 24, padding: 18, width: 180, height: 210, alignItems: 'center', justifyContent: 'center', shadowColor: '#000', shadowOpacity: 0.08, shadowRadius: 8, elevation: 2, marginBottom: 8, marginRight: 16 }} accessibilityLabel="Game Results Pie Chart" accessible accessibilityRole="image">
               <ThemedText style={{ color: colors.text, fontWeight: 'bold', fontSize: 16, marginBottom: 8, textAlign: 'center' }}>Game Results</ThemedText>
               <Svg width={100} height={100}>
                 {totalGames === 0 ? (
@@ -696,7 +697,7 @@ export default function HomeScreen() {
               </View>
             </View>
             {/* Progress Ring for Strategy Mastery Card */}
-            <View style={{ backgroundColor: colors.cardBackground, borderRadius: 24, padding: 18, width: 180, height: 210, alignItems: 'center', justifyContent: 'center', shadowColor: '#000', shadowOpacity: 0.08, shadowRadius: 8, elevation: 2, marginBottom: 8 }}>
+            <View style={{ backgroundColor: colors.cardBackground, borderRadius: 24, padding: 18, width: 180, height: 210, alignItems: 'center', justifyContent: 'center', shadowColor: '#000', shadowOpacity: 0.08, shadowRadius: 8, elevation: 2, marginBottom: 8 }} accessibilityLabel="Strategy Mastery Progress Ring" accessible accessibilityRole="image">
               <ThemedText style={{ color: colors.text, fontWeight: 'bold', fontSize: 16, marginBottom: 8, textAlign: 'center' }}>Strategy Mastery</ThemedText>
               <Svg width={70} height={70}>
                 <Circle
@@ -737,7 +738,7 @@ export default function HomeScreen() {
 
           {/* Trophy for Win Streaks Card */}
           {showTrophy && (
-            <View style={{ backgroundColor: colors.cardBackground, borderRadius: 24, padding: 18, marginBottom: 18, width: 260, alignItems: 'center', shadowColor: '#000', shadowOpacity: 0.08, shadowRadius: 8, elevation: 2 }}>
+            <View style={{ backgroundColor: colors.cardBackground, borderRadius: 24, padding: 18, marginBottom: 18, width: 260, alignItems: 'center', shadowColor: '#000', shadowOpacity: 0.08, shadowRadius: 8, elevation: 2 }} accessible accessibilityRole="summary" accessibilityLabel={`Win Streak: ${streak}`}>
               <FontAwesome name="trophy" size={36} color="#ffd700" style={{ marginBottom: 2 }} />
               <ThemedText style={{ color: colors.text, fontWeight: 'bold', fontSize: 18 }}>Win Streak: {streak}</ThemedText>
             </View>
@@ -770,6 +771,8 @@ export default function HomeScreen() {
           style={styles.playNowButton}
           activeOpacity={0.92}
           onPress={() => router.push('/(tabs)/play')}
+          accessibilityRole="button"
+          accessibilityLabel="Play Now"
         >
           <LinearGradient colors={[colors.gradientStart, colors.gradientEnd]} style={styles.playNowGradient}>
             <FontAwesome name="gamepad" size={28} color="#fff" style={{ marginRight: 10 }} />
@@ -787,6 +790,8 @@ export default function HomeScreen() {
               message: `Can you beat the unbeatable Tic-Tac-Nope? Play now! #TicTacNope`,
             });
           }}
+          accessibilityRole="button"
+          accessibilityLabel="Challenge a Friend"
         >
           <FontAwesome name="share-alt" size={20} color={colors.tint} style={{ marginRight: 8 }} />
           <ThemedText style={styles.challengeText}>Challenge a Friend</ThemedText>
