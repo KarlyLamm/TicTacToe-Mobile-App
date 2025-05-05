@@ -1,7 +1,7 @@
 import { ThemedText } from '@/components/ThemedText';
 import { ThemedView } from '@/components/ThemedView';
 import { Colors } from '@/constants/Colors';
-import { useColorScheme } from '@/hooks/useColorScheme';
+import { useTheme } from '@/contexts/ThemeContext';
 import { FontAwesome } from '@expo/vector-icons';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useEffect, useState } from 'react';
@@ -54,13 +54,100 @@ const strategies = [
 const STORAGE_KEY = 'reviewedStrategies';
 
 export default function LearnScreen() {
-  const colorScheme = useColorScheme() ?? 'light';
+  const { colorScheme } = useTheme();
   const colors = Colors[colorScheme];
   const [expanded, setExpanded] = useState<number[]>([]);
   const [reviewed, setReviewed] = useState<number[]>([]);
 
+  const styles = StyleSheet.create({
+    safeArea: {
+      flex: 1,
+      backgroundColor: colors.background,
+    },
+    scrollContent: {
+      paddingTop: 18,
+      paddingBottom: 24,
+    },
+    container: {
+      flex: 1,
+      paddingHorizontal: 16,
+      backgroundColor: colors.background,
+    },
+    progressCard: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      borderRadius: 16,
+      padding: 18,
+      marginBottom: 18,
+      borderWidth: 1,
+      borderColor: colors.border,
+      elevation: 2,
+      shadowColor: '#000',
+      shadowOffset: { width: 0, height: 2 },
+      shadowOpacity: 0.1,
+      shadowRadius: 4,
+    },
+    progressText: {
+      fontSize: 18,
+      fontWeight: '600',
+      color: colors.text,
+      opacity: 0.9,
+    },
+    card: {
+      borderRadius: 18,
+      marginBottom: 16,
+      padding: 18,
+      borderWidth: 1,
+      borderColor: colors.border,
+      elevation: 2,
+      shadowColor: '#000',
+      shadowOffset: { width: 0, height: 2 },
+      shadowOpacity: 0.1,
+      shadowRadius: 4,
+    },
+    cardHeaderRow: {
+      flexDirection: 'row',
+      alignItems: 'center',
+    },
+    numberBadge: {
+      width: 32,
+      height: 32,
+      borderRadius: 16,
+      alignItems: 'center',
+      justifyContent: 'center',
+      marginRight: 12,
+      backgroundColor: colors.tint,
+    },
+    numberBadgeText: {
+      color: '#fff',
+      fontWeight: 'bold',
+      fontSize: 16,
+    },
+    icon: {
+      marginRight: 12,
+      color: colors.tint,
+    },
+    cardTitle: {
+      flex: 1,
+      fontSize: 17,
+      fontWeight: '600',
+      color: colors.text,
+      opacity: 0.95,
+    },
+    chevron: {
+      marginLeft: 8,
+      color: colors.icon,
+    },
+    cardContent: {
+      marginTop: 14,
+      fontSize: 16,
+      lineHeight: 24,
+      color: colors.text,
+      opacity: 0.85,
+    },
+  });
+
   useEffect(() => {
-    // Load reviewed strategies from AsyncStorage
     AsyncStorage.getItem(STORAGE_KEY).then((data: string | null) => {
       if (data) {
         try {
@@ -74,7 +161,6 @@ export default function LearnScreen() {
     setExpanded((prev) =>
       prev.includes(idx) ? prev.filter(i => i !== idx) : [...prev, idx]
     );
-    // If not already reviewed, add to reviewed and save
     if (!reviewed.includes(idx)) {
       const newReviewed = [...reviewed, idx];
       setReviewed(newReviewed);
@@ -85,11 +171,11 @@ export default function LearnScreen() {
   return (
     <SafeAreaView style={styles.safeArea} edges={["top", "bottom"]}>
       <ScrollView contentContainerStyle={styles.scrollContent} showsVerticalScrollIndicator={false}>
-        <ThemedView style={styles.container}>
+        <ThemedView style={[styles.container, { backgroundColor: colors.background }]}>
           {/* Progress Card */}
-          <ThemedView style={styles.progressCard}>
+          <ThemedView style={[styles.progressCard, { backgroundColor: 'transparent' }] }>
             <FontAwesome name="trophy" size={28} color={colors.tint} style={{ marginRight: 12 }} />
-            <ThemedText style={styles.progressText}>
+            <ThemedText style={[styles.progressText, { color: colors.text }]}>
               {reviewed.length === strategies.length
                 ? 'All strategies reviewed!'
                 : `Strategies reviewed: ${reviewed.length} / ${strategies.length}`}
@@ -104,18 +190,21 @@ export default function LearnScreen() {
                 key={idx}
                 activeOpacity={0.95}
                 onPress={() => toggleExpand(idx)}
-                style={[styles.card, isOpen && { backgroundColor: '#e6f0ff', transform: [{ scale: 1.03 }] }]}
+                style={[
+                  styles.card,
+                  isOpen && { transform: [{ scale: 1.03 }] }
+                ]}
               >
-                <ThemedView style={styles.cardHeaderRow}>
+                <ThemedView style={[styles.cardHeaderRow, { backgroundColor: 'transparent' }] }>
                   <ThemedView style={[styles.numberBadge, { backgroundColor: colors.tint }]}>
                     <ThemedText style={styles.numberBadgeText}>{idx + 1}</ThemedText>
                   </ThemedView>
                   <FontAwesome name={strategy.icon as any} size={22} color={colors.tint} style={styles.icon} />
-                  <ThemedText type="subtitle" style={styles.cardTitle}>{strategy.title}</ThemedText>
+                  <ThemedText type="subtitle" style={[styles.cardTitle, { color: colors.text }]}>{strategy.title}</ThemedText>
                   <FontAwesome name={isOpen ? 'chevron-up' : 'chevron-down'} size={18} color={colors.icon} style={styles.chevron} />
                 </ThemedView>
                 {isOpen && (
-                  <ThemedText style={styles.cardContent}>{strategy.content}</ThemedText>
+                  <ThemedText style={[styles.cardContent, { color: colors.text }]}>{strategy.content}</ThemedText>
                 )}
               </TouchableOpacity>
             );
@@ -124,85 +213,4 @@ export default function LearnScreen() {
       </ScrollView>
     </SafeAreaView>
   );
-}
-
-const styles = StyleSheet.create({
-  safeArea: {
-    flex: 1,
-    backgroundColor: '#fafbfc',
-  },
-  scrollContent: {
-    paddingTop: 18,
-    paddingBottom: 24,
-  },
-  container: {
-    flex: 1,
-    backgroundColor: '#fafbfc',
-    paddingHorizontal: 16,
-  },
-  progressCard: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    backgroundColor: '#fff',
-    borderRadius: 16,
-    padding: 18,
-    marginBottom: 18,
-    elevation: 2,
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.08,
-    shadowRadius: 6,
-  },
-  progressText: {
-    fontSize: 18,
-    fontWeight: '600',
-    color: '#222',
-  },
-  card: {
-    backgroundColor: '#fff',
-    borderRadius: 18,
-    marginBottom: 16,
-    padding: 18,
-    elevation: 2,
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.10,
-    shadowRadius: 8,
-    transitionDuration: '150ms',
-  },
-  cardHeaderRow: {
-    flexDirection: 'row',
-    alignItems: 'center',
-  },
-  numberBadge: {
-    width: 32,
-    height: 32,
-    borderRadius: 16,
-    alignItems: 'center',
-    justifyContent: 'center',
-    marginRight: 12,
-  },
-  numberBadgeText: {
-    color: '#fff',
-    fontWeight: 'bold',
-    fontSize: 16,
-  },
-  icon: {
-    marginRight: 12,
-  },
-  cardTitle: {
-    flex: 1,
-    fontSize: 17,
-    fontWeight: '600',
-    color: '#222',
-  },
-  chevron: {
-    marginLeft: 8,
-  },
-  cardContent: {
-    marginTop: 14,
-    fontSize: 16,
-    color: '#444',
-    lineHeight: 24,
-  },
-}); 
+} 

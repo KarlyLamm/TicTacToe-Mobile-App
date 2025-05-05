@@ -8,23 +8,23 @@ const tintColorDark = '#60a5fa'; // A lighter blue for dark mode
 
 export const Colors = {
   light: {
-    text: '#1f2937',
     background: '#ffffff',
-    tint: tintColorLight,
-    icon: '#6b7280',
-    tabIconDefault: '#9ca3af',
-    tabIconSelected: tintColorLight,
-    gradientStart: '#2563eb',
-    gradientEnd: '#7c3aed', // A complementary purple
+    tint: '#2f95dc',
+    icon: '#666666',
+    text: '#000000',
+    gradientStart: '#4a90e2',
+    gradientEnd: '#2f95dc',
+    cardBackground: '#f5f5f5',
+    border: '#e0e0e0',
   },
   dark: {
-    text: '#f3f4f6',
-    background: '#111827',
-    tint: tintColorDark,
-    icon: '#9ca3af',
-    tabIconDefault: '#6b7280',
-    tabIconSelected: tintColorDark,
-    gradientStart: '#3b82f6',
-    gradientEnd: '#8b5cf6', // A lighter purple for dark mode
+    background: '#121212',
+    tint: '#4a90e2',
+    icon: '#a0a0a0',
+    text: '#ffffff',
+    gradientStart: '#1a1a1a',
+    gradientEnd: '#2d2d2d',
+    cardBackground: '#1e1e1e',
+    border: '#333333',
   },
 };
