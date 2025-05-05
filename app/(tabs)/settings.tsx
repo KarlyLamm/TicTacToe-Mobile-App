@@ -1,43 +1,58 @@
 import { Colors } from '@/constants/Colors';
-import { useColorScheme } from '@/hooks/useColorScheme';
 import { FontAwesome } from '@expo/vector-icons';
 import { LinearGradient } from 'expo-linear-gradient';
 import { useState } from 'react';
-import { ScrollView, StyleSheet, TouchableOpacity, View } from 'react-native';
+import { ScrollView, StyleSheet, Switch, TouchableOpacity, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 import { ThemedText } from '@/components/ThemedText';
+import { useTheme } from '@/contexts/ThemeContext';
 
 type Section = 'main' | 'faq' | 'privacy';
 
-export default function ProfileScreen() {
-  const colorScheme = useColorScheme() ?? 'light';
-  const colors = Colors[colorScheme];
+export default function SettingsScreen() {
+  const { colorScheme, setColorScheme, isDarkMode } = useTheme();
   const [currentSection, setCurrentSection] = useState<Section>('main');
+  const colors = Colors[colorScheme];
+
+  const toggleDarkMode = () => {
+    setColorScheme(isDarkMode ? 'light' : 'dark');
+  };
 
   const renderMainSection = () => (
     <View style={styles.section}>
       <LinearGradient colors={[colors.gradientStart, colors.gradientEnd]} style={styles.heroCard}>
-        <FontAwesome name="user-circle" size={48} color="#fffbe6" />
-        <ThemedText style={styles.heroTitle}>Your Profile</ThemedText>
-        <ThemedText style={styles.heroSubtitle}>Manage your app experience</ThemedText>
+        <FontAwesome name="cog" size={48} color="#fffbe6" />
+        <ThemedText style={[styles.heroTitle, { color: colors.text }]}>Settings</ThemedText>
+        <ThemedText style={[styles.heroSubtitle, { color: colors.text }]}>Customize your app experience</ThemedText>
       </LinearGradient>
 
+      <View style={[styles.menuItem, { backgroundColor: colors.cardBackground }]}>
+        <FontAwesome name="moon-o" size={24} color={colors.tint} />
+        <ThemedText style={[styles.menuText, { color: colors.text }]}>Dark Mode</ThemedText>
+        <Switch
+          value={isDarkMode}
+          onValueChange={toggleDarkMode}
+          trackColor={{ false: colors.icon, true: colors.tint }}
+          thumbColor={colors.background}
+        />
+      </View>
+
       <TouchableOpacity 
-        style={[styles.menuItem, { backgroundColor: colors.background }]}
+        style={[styles.menuItem, { backgroundColor: colors.cardBackground }]}
         onPress={() => setCurrentSection('faq')}
       >
         <FontAwesome name="question-circle" size={24} color={colors.tint} />
-        <ThemedText style={styles.menuText}>FAQ</ThemedText>
+        <ThemedText style={[styles.menuText, { color: colors.text }]}>FAQ</ThemedText>
         <FontAwesome name="chevron-right" size={16} color={colors.icon} />
       </TouchableOpacity>
 
       <TouchableOpacity 
-        style={[styles.menuItem, { backgroundColor: colors.background }]}
+        style={[styles.menuItem, { backgroundColor: colors.cardBackground }]}
         onPress={() => setCurrentSection('privacy')}
       >
         <FontAwesome name="shield" size={24} color={colors.tint} />
-        <ThemedText style={styles.menuText}>Privacy Policy</ThemedText>
+        <ThemedText style={[styles.menuText, { color: colors.text }]}>Privacy Policy</ThemedText>
         <FontAwesome name="chevron-right" size={16} color={colors.icon} />
       </TouchableOpacity>
     </View>
@@ -50,28 +65,28 @@ export default function ProfileScreen() {
         onPress={() => setCurrentSection('main')}
       >
         <FontAwesome name="arrow-left" size={20} color={colors.tint} />
-        <ThemedText style={styles.backButtonText}>Back</ThemedText>
+        <ThemedText style={[styles.backButtonText, { color: colors.text }]}>Back</ThemedText>
       </TouchableOpacity>
 
-      <ThemedText type="title" style={styles.sectionTitle}>Frequently Asked Questions</ThemedText>
+      <ThemedText type="title" style={[styles.sectionTitle, { color: colors.text }]}>Frequently Asked Questions</ThemedText>
 
-      <View style={[styles.faqItem, { backgroundColor: colors.background }]}>
-        <ThemedText style={styles.faqQuestion}>How do I win at Tic-Tac-Toe?</ThemedText>
-        <ThemedText style={styles.faqAnswer}>
+      <View style={[styles.faqItem, { backgroundColor: colors.cardBackground }]}>
+        <ThemedText style={[styles.faqQuestion, { color: colors.text }]}>How do I win at Tic-Tac-Toe?</ThemedText>
+        <ThemedText style={[styles.faqAnswer, { color: colors.text }]}>
           Check out our Strategy Guide in the Learn tab! We&apos;ve compiled expert tips to help you master the game.
         </ThemedText>
       </View>
 
-      <View style={[styles.faqItem, { backgroundColor: colors.background }]}>
-        <ThemedText style={styles.faqQuestion}>Is this app free?</ThemedText>
-        <ThemedText style={styles.faqAnswer}>
+      <View style={[styles.faqItem, { backgroundColor: colors.cardBackground }]}>
+        <ThemedText style={[styles.faqQuestion, { color: colors.text }]}>Is this app free?</ThemedText>
+        <ThemedText style={[styles.faqAnswer, { color: colors.text }]}>
           Yes! Unbeatable Tic-Tac-Toe is completely free to play, with no ads or in-app purchases.
         </ThemedText>
       </View>
 
-      <View style={[styles.faqItem, { backgroundColor: colors.background }]}>
-        <ThemedText style={styles.faqQuestion}>How do I share my game results?</ThemedText>
-        <ThemedText style={styles.faqAnswer}>
+      <View style={[styles.faqItem, { backgroundColor: colors.cardBackground }]}>
+        <ThemedText style={[styles.faqQuestion, { color: colors.text }]}>How do I share my game results?</ThemedText>
+        <ThemedText style={[styles.faqAnswer, { color: colors.text }]}>
           After each game, tap the &quot;Share&quot; button to share your game board and result with friends.
         </ThemedText>
       </View>
@@ -85,33 +100,33 @@ export default function ProfileScreen() {
         onPress={() => setCurrentSection('main')}
       >
         <FontAwesome name="arrow-left" size={20} color={colors.tint} />
-        <ThemedText style={styles.backButtonText}>Back</ThemedText>
+        <ThemedText style={[styles.backButtonText, { color: colors.text }]}>Back</ThemedText>
       </TouchableOpacity>
 
-      <ThemedText type="title" style={styles.sectionTitle}>Privacy Policy</ThemedText>
+      <ThemedText type="title" style={[styles.sectionTitle, { color: colors.text }]}>Privacy Policy</ThemedText>
 
-      <View style={[styles.privacyContent, { backgroundColor: colors.background }]}>
-        <ThemedText style={styles.privacyText}>
+      <View style={[styles.privacyContent, { backgroundColor: colors.cardBackground }]}>
+        <ThemedText style={[styles.privacyText, { color: colors.text }]}>
           At Unbeatable Tic-Tac-Toe, we take your privacy seriously. Here&apos;s what you need to know:
         </ThemedText>
 
-        <ThemedText style={styles.privacyText}>
+        <ThemedText style={[styles.privacyText, { color: colors.text }]}>
           • All game data (wins, losses, learning progress) is stored locally on your device using AsyncStorage
         </ThemedText>
 
-        <ThemedText style={styles.privacyText}>
+        <ThemedText style={[styles.privacyText, { color: colors.text }]}>
           • We do not collect, store, or transmit any personal information
         </ThemedText>
 
-        <ThemedText style={styles.privacyText}>
+        <ThemedText style={[styles.privacyText, { color: colors.text }]}>
           • No analytics or tracking is implemented in the app
         </ThemedText>
 
-        <ThemedText style={styles.privacyText}>
+        <ThemedText style={[styles.privacyText, { color: colors.text }]}>
           • Your game preferences and settings are stored locally only
         </ThemedText>
 
-        <ThemedText style={styles.privacyText}>
+        <ThemedText style={[styles.privacyText, { color: colors.text }]}>
           • The app requires no special permissions and can be used offline
         </ThemedText>
       </View>
@@ -145,7 +160,8 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     borderRadius: 24,
     marginBottom: 24,
-    padding: 24,
+    padding: 32,
+    paddingTop: 40,
     elevation: 4,
     shadowColor: '#000',
     shadowOffset: { width: 0, height: 2 },
@@ -153,10 +169,9 @@ const styles = StyleSheet.create({
     shadowRadius: 8,
   },
   heroTitle: {
-    fontSize: 28,
+    fontSize: 24,
     fontWeight: 'bold',
-    color: '#fffbe6',
-    marginTop: 16,
+    marginTop: 24,
     marginBottom: 4,
     textShadowColor: 'rgba(0,0,0,0.18)',
     textShadowOffset: { width: 1, height: 2 },
@@ -164,7 +179,6 @@ const styles = StyleSheet.create({
   },
   heroSubtitle: {
     fontSize: 16,
-    color: '#fffbe6',
     opacity: 0.92,
     fontWeight: '600',
     textShadowColor: 'rgba(0,0,0,0.10)',
@@ -233,7 +247,5 @@ const styles = StyleSheet.create({
   },
   privacyText: {
     fontSize: 14,
-    lineHeight: 22,
-    marginBottom: 12,
   },
 }); 
