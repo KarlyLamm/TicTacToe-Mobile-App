@@ -20,14 +20,14 @@ export default function SettingsScreen() {
   };
 
   const renderMainSection = () => (
-    <View style={styles.section}>
-      <LinearGradient colors={[colors.gradientStart, colors.gradientEnd]} style={styles.heroCard}>
+    <View style={styles.section} accessible accessibilityLabel="Main settings section">
+      <LinearGradient colors={[colors.gradientStart, colors.gradientEnd]} style={styles.heroCard} accessible accessibilityRole="header" accessibilityLabel="Settings">
         <FontAwesome name="cog" size={48} color="#fffbe6" />
         <ThemedText style={[styles.heroTitle, { color: colors.headerText }]}>Settings</ThemedText>
         <ThemedText style={[styles.heroSubtitle, { color: colors.headerText }]}>Customize your app experience</ThemedText>
       </LinearGradient>
 
-      <View style={[styles.menuItem, { backgroundColor: colors.cardBackground }]}>
+      <View style={[styles.menuItem, { backgroundColor: colors.cardBackground }]} accessible accessibilityRole="menuitem" accessibilityLabel="Dark Mode toggle">
         <FontAwesome name="moon-o" size={24} color={colors.tint} />
         <ThemedText style={[styles.menuText, { color: colors.text }]}>Dark Mode</ThemedText>
         <Switch
@@ -35,12 +35,19 @@ export default function SettingsScreen() {
           onValueChange={toggleDarkMode}
           trackColor={{ false: colors.icon, true: colors.tint }}
           thumbColor={colors.background}
+          accessible
+          accessibilityRole="switch"
+          accessibilityLabel="Dark Mode"
+          accessibilityState={{ checked: isDarkMode }}
         />
       </View>
 
       <TouchableOpacity 
         style={[styles.menuItem, { backgroundColor: colors.cardBackground }]}
         onPress={() => setCurrentSection('faq')}
+        accessible
+        accessibilityRole="button"
+        accessibilityLabel="FAQ"
       >
         <FontAwesome name="question-circle" size={24} color={colors.tint} />
         <ThemedText style={[styles.menuText, { color: colors.text }]}>FAQ</ThemedText>
@@ -50,6 +57,9 @@ export default function SettingsScreen() {
       <TouchableOpacity 
         style={[styles.menuItem, { backgroundColor: colors.cardBackground }]}
         onPress={() => setCurrentSection('privacy')}
+        accessible
+        accessibilityRole="button"
+        accessibilityLabel="Privacy Policy"
       >
         <FontAwesome name="shield" size={24} color={colors.tint} />
         <ThemedText style={[styles.menuText, { color: colors.text }]}>Privacy Policy</ThemedText>
@@ -59,32 +69,35 @@ export default function SettingsScreen() {
   );
 
   const renderFAQSection = () => (
-    <View style={styles.section}>
+    <View style={styles.section} accessible accessibilityLabel="FAQ section">
       <TouchableOpacity 
         style={styles.backButton}
         onPress={() => setCurrentSection('main')}
+        accessible
+        accessibilityRole="button"
+        accessibilityLabel="Back to main settings"
       >
         <FontAwesome name="arrow-left" size={20} color={colors.tint} />
         <ThemedText style={[styles.backButtonText, { color: colors.text }]}>Back</ThemedText>
       </TouchableOpacity>
 
-      <ThemedText type="title" style={[styles.sectionTitle, { color: colors.text }]}>Frequently Asked Questions</ThemedText>
+      <ThemedText type="title" style={[styles.sectionTitle, { color: colors.text }]} accessible accessibilityRole="header" accessibilityLabel="Frequently Asked Questions">Frequently Asked Questions</ThemedText>
 
-      <View style={[styles.faqItem, { backgroundColor: colors.cardBackground }]}>
+      <View style={[styles.faqItem, { backgroundColor: colors.cardBackground }]} accessible accessibilityLabel="How do I win at Tic-Tac-Toe?">
         <ThemedText style={[styles.faqQuestion, { color: colors.text }]}>How do I win at Tic-Tac-Toe?</ThemedText>
         <ThemedText style={[styles.faqAnswer, { color: colors.text }]}>
           Check out our Strategy Guide in the Learn tab! We&apos;ve compiled expert tips to help you master the game.
         </ThemedText>
       </View>
 
-      <View style={[styles.faqItem, { backgroundColor: colors.cardBackground }]}>
+      <View style={[styles.faqItem, { backgroundColor: colors.cardBackground }]} accessible accessibilityLabel="Is this app free?">
         <ThemedText style={[styles.faqQuestion, { color: colors.text }]}>Is this app free?</ThemedText>
         <ThemedText style={[styles.faqAnswer, { color: colors.text }]}>
           Yes! Unbeatable Tic-Tac-Toe is completely free to play, with no ads or in-app purchases.
         </ThemedText>
       </View>
 
-      <View style={[styles.faqItem, { backgroundColor: colors.cardBackground }]}>
+      <View style={[styles.faqItem, { backgroundColor: colors.cardBackground }]} accessible accessibilityLabel="How do I share my game results?">
         <ThemedText style={[styles.faqQuestion, { color: colors.text }]}>How do I share my game results?</ThemedText>
         <ThemedText style={[styles.faqAnswer, { color: colors.text }]}>
           After each game, tap the &quot;Share&quot; button to share your game board and result with friends.
@@ -94,18 +107,21 @@ export default function SettingsScreen() {
   );
 
   const renderPrivacySection = () => (
-    <View style={styles.section}>
+    <View style={styles.section} accessible accessibilityLabel="Privacy Policy section">
       <TouchableOpacity 
         style={styles.backButton}
         onPress={() => setCurrentSection('main')}
+        accessible
+        accessibilityRole="button"
+        accessibilityLabel="Back to main settings"
       >
         <FontAwesome name="arrow-left" size={20} color={colors.tint} />
         <ThemedText style={[styles.backButtonText, { color: colors.text }]}>Back</ThemedText>
       </TouchableOpacity>
 
-      <ThemedText type="title" style={[styles.sectionTitle, { color: colors.text }]}>Privacy Policy</ThemedText>
+      <ThemedText type="title" style={[styles.sectionTitle, { color: colors.text }]} accessible accessibilityRole="header" accessibilityLabel="Privacy Policy">Privacy Policy</ThemedText>
 
-      <View style={[styles.privacyContent, { backgroundColor: colors.cardBackground }]}>
+      <View style={[styles.privacyContent, { backgroundColor: colors.cardBackground }]} accessible accessibilityLabel="Privacy details">
         <ThemedText style={[styles.privacyText, { color: colors.text }]}>
           At Unbeatable Tic-Tac-Toe, we take your privacy seriously. Here&apos;s what you need to know:
         </ThemedText>
@@ -134,7 +150,7 @@ export default function SettingsScreen() {
   );
 
   return (
-    <SafeAreaView style={[styles.safeArea, { backgroundColor: colors.background }]} edges={["top", "bottom"]}>
+    <SafeAreaView style={[styles.safeArea, { backgroundColor: colors.background }]} edges={["top", "bottom"]} accessible accessibilityLabel="Settings Screen">
       <ScrollView contentContainerStyle={styles.scrollContent}>
         {currentSection === 'main' && renderMainSection()}
         {currentSection === 'faq' && renderFAQSection()}

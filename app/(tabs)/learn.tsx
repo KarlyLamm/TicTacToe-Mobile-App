@@ -72,6 +72,7 @@ export default function LearnScreen() {
       flex: 1,
       paddingHorizontal: 16,
       backgroundColor: colors.background,
+      marginBottom: 18
     },
     progressCard: {
       flexDirection: 'row',
@@ -169,11 +170,11 @@ export default function LearnScreen() {
   };
 
   return (
-    <SafeAreaView style={styles.safeArea} edges={["top", "bottom"]}>
+    <SafeAreaView style={styles.safeArea} edges={["top", "bottom"]} accessible accessibilityLabel="Learn Tic-Tac-Toe Strategies Screen">
       <ScrollView contentContainerStyle={styles.scrollContent} showsVerticalScrollIndicator={false}>
-        <ThemedView style={[styles.container, { backgroundColor: colors.background }]}>
+        <ThemedView style={[styles.container, { backgroundColor: colors.background }]} accessible accessibilityLabel="Strategy progress and list">
           {/* Progress Card */}
-          <ThemedView style={[styles.progressCard, { backgroundColor: 'transparent' }] }>
+          <ThemedView style={[styles.progressCard, { backgroundColor: 'transparent' }]} accessible accessibilityRole="summary" accessibilityLabel={`Strategies reviewed: ${reviewed.length} of ${strategies.length}`}>
             <FontAwesome name="trophy" size={28} color={colors.tint} style={{ marginRight: 12 }} />
             <ThemedText style={[styles.progressText, { color: colors.text }]}>
               {reviewed.length === strategies.length
@@ -194,17 +195,21 @@ export default function LearnScreen() {
                   styles.card,
                   isOpen && { transform: [{ scale: 1.03 }] }
                 ]}
+                accessible
+                accessibilityRole="button"
+                accessibilityLabel={`Strategy ${idx + 1}: ${strategy.title}. ${isOpen ? 'Expanded' : 'Collapsed'}`}
+                accessibilityState={{ expanded: isOpen }}
               >
                 <ThemedView style={[styles.cardHeaderRow, { backgroundColor: 'transparent' }] }>
                   <ThemedView style={[styles.numberBadge, { backgroundColor: colors.tint }]}>
                     <ThemedText style={styles.numberBadgeText}>{idx + 1}</ThemedText>
                   </ThemedView>
-                  <FontAwesome name={strategy.icon as any} size={22} color={colors.tint} style={styles.icon} />
+                  <FontAwesome name={strategy.icon as any} size={22} color={colors.tint} style={styles.icon} accessibilityLabel={`Icon for ${strategy.title}`} />
                   <ThemedText type="subtitle" style={[styles.cardTitle, { color: colors.text }]}>{strategy.title}</ThemedText>
-                  <FontAwesome name={isOpen ? 'chevron-up' : 'chevron-down'} size={18} color={colors.icon} style={styles.chevron} />
+                  <FontAwesome name={isOpen ? 'chevron-up' : 'chevron-down'} size={18} color={colors.icon} style={styles.chevron} accessibilityLabel={isOpen ? 'Collapse' : 'Expand'} />
                 </ThemedView>
                 {isOpen && (
-                  <ThemedText style={[styles.cardContent, { color: colors.text }]}>{strategy.content}</ThemedText>
+                  <ThemedText style={[styles.cardContent, { color: colors.text }]} accessibilityRole="text" accessibilityLabel={strategy.content}>{strategy.content}</ThemedText>
                 )}
               </TouchableOpacity>
             );

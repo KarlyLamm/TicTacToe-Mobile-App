@@ -432,6 +432,9 @@ export default function PlayScreen() {
             transform: [{ scale: 1.08 }] 
           },
         ]}
+        accessible
+        accessibilityRole="none"
+        accessibilityLabel={`Square ${index + 1}${isWinner ? ', part of winning line' : ''}`}
       >
         <TouchableOpacity
           style={[
@@ -450,6 +453,10 @@ export default function PlayScreen() {
           ]}
           activeOpacity={0.7}
           onPress={() => handlePress(index)}
+          accessible
+          accessibilityRole="button"
+          accessibilityLabel={`Tic Tac Toe square ${index + 1}, ${board[index] ? board[index] : 'empty'}${isWinner ? ', part of winning line' : ''}`}
+          accessibilityState={{ disabled: !!board[index] || !!winner || !gameStarted }}
         >
           {board[index] && (
             <Animated.Text
@@ -466,6 +473,9 @@ export default function PlayScreen() {
                   textShadowOffset: { width: 0, height: 0 } 
                 },
               ]}
+              accessible
+              accessibilityRole="text"
+              accessibilityLabel={`Mark: ${board[index]}`}
             >
               {board[index]}
             </Animated.Text>
@@ -482,14 +492,18 @@ export default function PlayScreen() {
     <SafeAreaView style={[styles.safeArea, { backgroundColor: 'transparent' }] }>
       {/* Floating glassy header */}
       <LinearGradient colors={[colors.gradientStart, colors.gradientEnd]} style={[styles.headerGradient, { borderBottomLeftRadius: 0, borderBottomRightRadius: 0 }]}>
-        <View style={styles.headerGlass}>
+        <View style={styles.headerGlass} accessible accessibilityRole="header" accessibilityLabel="Tic-Tac-Nope Game Screen">
           <FontAwesome name="gamepad" size={28} color={colors.tint} style={{ marginRight: 10 }} />
           <ThemedText style={styles.headerTitle}>Tic-Tac-Nope</ThemedText>
         </View>
-        <Animated.View style={[styles.turnIndicator, {
-          backgroundColor: isXNext ? colors.gradientStart : colors.gradientEnd,
-          opacity: turnAnim.interpolate({ inputRange: [0, 1], outputRange: [0.7, 1] }),
-        }]}
+        <Animated.View
+          style={[styles.turnIndicator, {
+            backgroundColor: isXNext ? colors.gradientStart : colors.gradientEnd,
+            opacity: turnAnim.interpolate({ inputRange: [0, 1], outputRange: [0.7, 1] }),
+          }]}
+          accessible
+          accessibilityRole="text"
+          accessibilityLabel={`Turn indicator. ${!gameStarted ? 'Ready' : winner ? 'Game Over' : isXNext ? 'Your Turn' : 'Computer Thinking'}`}
         >
           <FontAwesome name={isXNext ? 'user' : 'cogs'} size={18} color="#fff" style={{ marginRight: 6 }} />
           <ThemedText style={styles.turnText}>{!gameStarted ? 'Ready?' : winner ? 'Game Over' : isXNext ? 'Your Turn' : 'Computer Thinking...'}</ThemedText>
@@ -525,6 +539,9 @@ export default function PlayScreen() {
                 style={[styles.startButton, { backgroundColor: colors.tint }]}
                 onPress={() => setShowStartModal(true)}
                 activeOpacity={0.92}
+                accessible
+                accessibilityRole="button"
+                accessibilityLabel="Start Game"
               >
                 <FontAwesome name="play-circle" size={28} color="#fff" style={{ marginRight: 10 }} />
                 <ThemedText style={styles.startButtonText}>Start Game</ThemedText>
@@ -584,6 +601,10 @@ export default function PlayScreen() {
                         onPress={resetGame}
                         disabled={isSharing}
                         activeOpacity={0.92}
+                        accessible
+                        accessibilityRole="button"
+                        accessibilityLabel="New Game"
+                        accessibilityState={{ disabled: isSharing }}
                       >
                         <ThemedText style={styles.buttonText}>New Game</ThemedText>
                       </TouchableOpacity>
@@ -592,6 +613,10 @@ export default function PlayScreen() {
                         onPress={handleShare}
                         disabled={isSharing}
                         activeOpacity={0.92}
+                        accessible
+                        accessibilityRole="button"
+                        accessibilityLabel="Share Game Result"
+                        accessibilityState={{ disabled: isSharing }}
                       >
                         {isSharing ? (
                           <ActivityIndicator color="#fff" />
@@ -613,16 +638,22 @@ export default function PlayScreen() {
           >
             <ThemedView style={styles.modalContainer}>
               <ThemedView style={styles.modalContent}>
-                <ThemedText style={styles.modalTitle}>Who goes first?</ThemedText>
+                <ThemedText style={styles.modalTitle} accessible accessibilityRole="header" accessibilityLabel="Who goes first?">Who goes first?</ThemedText>
                 <TouchableOpacity
                   style={[styles.modalButton, { backgroundColor: colors.tint }]}
                   onPress={() => startGame(true)}
+                  accessible
+                  accessibilityRole="button"
+                  accessibilityLabel="I'll go first"
                 >
                   <ThemedText style={styles.modalButtonText}>I&apos;ll go first</ThemedText>
                 </TouchableOpacity>
                 <TouchableOpacity
                   style={[styles.modalButton, { backgroundColor: colors.tint }]}
                   onPress={() => startGame(false)}
+                  accessible
+                  accessibilityRole="button"
+                  accessibilityLabel="Computer goes first"
                 >
                   <ThemedText style={styles.modalButtonText}>Computer goes first</ThemedText>
                 </TouchableOpacity>
