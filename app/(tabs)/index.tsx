@@ -19,13 +19,19 @@ const TOTAL_TIPS = 8;
 
 const windowWidth = Dimensions.get('window').width;
 
+type GameStats = {
+  won: string[];
+  lost: string[];
+  draw: string[];
+};
+
 export default function HomeScreen() {
   const { colorScheme } = useTheme();
   const colors = Colors[colorScheme];
   const router = useRouter();
   const insets = useSafeAreaInsets();
 
-  const [stats, setStats] = useState({ won: 0, lost: 0, draw: 0 });
+  const [stats, setStats] = useState<GameStats>({ won: [], lost: [], draw: [] });
   const [learned, setLearned] = useState<number>(0);
   const [streak, setStreak] = useState<number>(0);
   const [lastResult, setLastResult] = useState<string | null>(null);
@@ -101,11 +107,11 @@ export default function HomeScreen() {
 
   // Pie chart data for stats
   const pieData = [
-    { value: stats.won, color: '#4a90e2', label: 'Wins' },
-    { value: stats.lost, color: '#ff6b6b', label: 'Losses' },
-    { value: stats.draw, color: '#ffd700', label: 'Draws' },
+    { value: stats.won.length, color: '#4a90e2', label: 'Wins' },
+    { value: stats.lost.length, color: '#ff6b6b', label: 'Losses' },
+    { value: stats.draw.length, color: '#ffd700', label: 'Draws' },
   ];
-  const totalGames = stats.won + stats.lost + stats.draw;
+  const totalGames = stats.won.length + stats.lost.length + stats.draw.length;
 
   // Pie chart drawing helper
   function describeArc(cx: number, cy: number, r: number, startAngle: number, endAngle: number) {
@@ -158,6 +164,17 @@ export default function HomeScreen() {
       </TouchableOpacity>
     </Link>
   );
+
+  const handleStatPress = (type: 'won' | 'lost' | 'draw') => {
+    console.log("HERE",JSON.stringify(stats[type]));
+    router.push({
+      pathname: '/history',
+      params: { 
+        type,
+        initialData: JSON.stringify(stats[type])
+      }
+    });
+  };
 
   const styles = StyleSheet.create({
     safeArea: {
@@ -424,6 +441,9 @@ export default function HomeScreen() {
       gap: 14,
       margin: 18
     },
+    statsButton:{
+      flex: 1
+    },
     statCardGradient: {
       flex: 1,
       borderRadius: 18,
@@ -642,28 +662,47 @@ export default function HomeScreen() {
         <View style={{ alignItems: 'center', paddingTop: 32, paddingBottom: 24 }} accessible accessibilityLabel="Game stats and progress">
 
           {/* Stat Cards for Wins, Losses, Draws */}
-          <View style={styles.statsRow} accessible accessibilityRole="summary" accessibilityLabel={`Wins: ${stats.won}, Losses: ${stats.lost}, Draws: ${stats.draw}`}>
-            <LinearGradient colors={[colors.gradientStart, colors.gradientEnd]} style={styles.statCardGradient} accessible accessibilityRole="summary" accessibilityLabel={`Wins: ${stats.won}`}>
-              <ThemedView style={[styles.statCard, { backgroundColor: 'transparent' }]}> 
-                <FontAwesome name="trophy" size={32} color={'#fff'} style={styles.statIcon} />
-                <ThemedText style={styles.statNumberGlow}>{stats.won}</ThemedText>
-                <ThemedText style={styles.statLabelGlow}>Wins</ThemedText>
-              </ThemedView>
-            </LinearGradient>
-            <LinearGradient colors={['#ffb6b6', '#ff6e6e']} style={styles.statCardGradient} accessible accessibilityRole="summary" accessibilityLabel={`Losses: ${stats.lost}`}>
-              <ThemedView style={[styles.statCard, { backgroundColor: 'transparent' }]}> 
-                <FontAwesome name="times-circle" size={32} color={'#fff'} style={styles.statIcon} />
-                <ThemedText style={styles.statNumberGlow}>{stats.lost}</ThemedText>
-                <ThemedText style={styles.statLabelGlow}>Losses</ThemedText>
-              </ThemedView>
-            </LinearGradient>
-            <LinearGradient colors={['#b6d0ff', '#6e9cff']} style={styles.statCardGradient} accessible accessibilityRole="summary" accessibilityLabel={`Draws: ${stats.draw}`}>
-              <ThemedView style={[styles.statCard, { backgroundColor: 'transparent' }]}> 
-                <FontAwesome name="handshake-o" size={32} color={'#fff'} style={styles.statIcon} />
-                <ThemedText style={styles.statNumberGlow}>{stats.draw}</ThemedText>
-                <ThemedText style={styles.statLabelGlow}>Draws</ThemedText>
-              </ThemedView>
-            </LinearGradient>
+          <View style={styles.statsRow} accessible accessibilityRole="summary" accessibilityLabel={`Wins: ${stats.won.length}, Losses: ${stats.lost.length}, Draws: ${stats.draw.length}`}>
+            <TouchableOpacity 
+              onPress={() => handleStatPress('won')}
+              activeOpacity={0.7}
+              style={styles.statsButton}
+            >
+              <LinearGradient colors={[colors.gradientStart, colors.gradientEnd]} style={styles.statCardGradient} accessible accessibilityRole="summary" accessibilityLabel={`Wins: ${stats.won.length}`}>
+                <ThemedView style={[styles.statCard, { backgroundColor: 'transparent' }]}> 
+                  <FontAwesome name="trophy" size={32} color={'#fff'} style={styles.statIcon} />
+                  <ThemedText style={styles.statNumberGlow}>{stats.won.length}</ThemedText>
+                  <ThemedText style={styles.statLabelGlow}>Wins</ThemedText>
+                </ThemedView>
+              </LinearGradient>
+            </TouchableOpacity>
+            <TouchableOpacity 
+              onPress={() => handleStatPress('lost')}
+              activeOpacity={0.7}
+              style={styles.statsButton}
+
+            >
+              <LinearGradient colors={['#ffb6b6', '#ff6e6e']} style={styles.statCardGradient} accessible accessibilityRole="summary" accessibilityLabel={`Losses: ${stats.lost.length}`}>
+                <ThemedView style={[styles.statCard, { backgroundColor: 'transparent' }]}> 
+                  <FontAwesome name="times-circle" size={32} color={'#fff'} style={styles.statIcon} />
+                  <ThemedText style={styles.statNumberGlow}>{stats.lost.length}</ThemedText>
+                  <ThemedText style={styles.statLabelGlow}>Losses</ThemedText>
+                </ThemedView>
+              </LinearGradient>
+            </TouchableOpacity>
+            <TouchableOpacity 
+              onPress={() => handleStatPress('draw')}
+              activeOpacity={0.7}
+              style={styles.statsButton}
+            >
+              <LinearGradient colors={['#b6d0ff', '#6e9cff']} style={styles.statCardGradient} accessible accessibilityRole="summary" accessibilityLabel={`Draws: ${stats.draw.length}`}>
+                <ThemedView style={[styles.statCard, { backgroundColor: 'transparent' }]}> 
+                  <FontAwesome name="handshake-o" size={32} color={'#fff'} style={styles.statIcon} />
+                  <ThemedText style={styles.statNumberGlow}>{stats.draw.length}</ThemedText>
+                  <ThemedText style={styles.statLabelGlow}>Draws</ThemedText>
+                </ThemedView>
+              </LinearGradient>
+            </TouchableOpacity>
           </View>
 
           {/* Game Results and Strategy Mastery Side by Side */}

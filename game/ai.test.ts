@@ -124,17 +124,34 @@ describe('Tic-Tac-Toe Game Logic (Board/Stats)', () => {
   });
   it('updates stats correctly after each game', () => {
     // Simple stats mock
-    let stats = { won: 0, lost: 0, draw: 0 };
+    let stats: { won: string[], lost: string[], draw: string[] } = { won: [], lost: [], draw: [] };
+    const mockDate = '2024-04-25T12:00:00.000Z';
+    
     function updateStats(winner: Player | 'draw' | null) {
-      if (winner === 'X') stats.won++;
-      else if (winner === 'O') stats.lost++;
-      else if (winner === 'draw') stats.draw++;
+      if (winner === 'X') stats.won.push(mockDate);
+      else if (winner === 'O') stats.lost.push(mockDate);
+      else if (winner === 'draw') stats.draw.push(mockDate);
     }
+
     updateStats('X');
     updateStats('O');
     updateStats('draw');
     updateStats('X');
-    expect(stats).toEqual({ won: 2, lost: 1, draw: 1 });
+
+    // Verify array lengths
+    expect(stats.won.length).toBe(2);
+    expect(stats.lost.length).toBe(1);
+    expect(stats.draw.length).toBe(1);
+
+    // Verify array structure
+    expect(stats.won).toEqual([mockDate, mockDate]);
+    expect(stats.lost).toEqual([mockDate]);
+    expect(stats.draw).toEqual([mockDate]);
+
+    // Verify all timestamps are valid ISO strings
+    [...stats.won, ...stats.lost, ...stats.draw].forEach(timestamp => {
+      expect(new Date(timestamp).toISOString()).toBe(timestamp);
+    });
   });
 });
 

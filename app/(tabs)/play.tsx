@@ -22,6 +22,12 @@ const windowWidth = Dimensions.get('window').width;
 type Player = 'X' | 'O' | null;
 type Board = Player[];
 
+type GameStats = {
+  won: string[];
+  lost: string[];
+  draw: string[];
+};
+
 export default function PlayScreen() {
   const { colorScheme } = useTheme();
   const colors = Colors[colorScheme];
@@ -363,13 +369,18 @@ export default function PlayScreen() {
   useEffect(() => {
     if (winner) {
       AsyncStorage.getItem(STATS_KEY).then((data) => {
-        let stats = { won: 0, lost: 0, draw: 0 };
+        let stats: GameStats = { 
+          won: [], 
+          lost: [], 
+          draw: [] 
+        };
         if (data) {
           try { stats = JSON.parse(data); } catch {}
         }
-        if (winner === 'X') stats.won++;
-        else if (winner === 'O') stats.lost++;
-        else if (winner === 'draw') stats.draw++;
+        const timestamp = new Date().toISOString();
+        if (winner === 'X') stats.won.push(timestamp);
+        else if (winner === 'O') stats.lost.push(timestamp);
+        else if (winner === 'draw') stats.draw.push(timestamp);
         AsyncStorage.setItem(STATS_KEY, JSON.stringify(stats));
       });
     }
